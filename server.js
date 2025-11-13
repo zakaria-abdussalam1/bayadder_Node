@@ -10,8 +10,8 @@ const nodemailer = require('nodemailer');
 
 // Configure nodemailer
 const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST || 'mail.bayadder.com',
-  port: parseInt(process.env.SMTP_PORT) || 587,
+  host: process.env.SMTP_HOST,
+  port: parseInt(process.env.SMTP_PORT),
   secure: process.env.SMTP_SECURE === 'true',
   auth: {
     user: process.env.EMAIL_USER,
@@ -25,11 +25,11 @@ app.use(express.json());
 
 // PostgreSQL connection
 const pool = new pg.Pool({
-user: 'baydderc',
-host: '127.0.0.1',
-database: 'baydderc_bayadder',
-password: 'DXtG9V2w4N',
-port: 5432,
+user: process.env.DB_USER,
+host: process.env.DB_HOST,
+database: process.env.DB_NAME,
+password: process.env.DB_PASSWORD,
+port: parseInt(process.env.DB_PORT),
 });
 
 // Helper function to hash password
@@ -627,7 +627,7 @@ app.post('/api/contact', async (req, res) => {
 
     // Email content
     const mailOptions = {
-      from: process.env.EMAIL_USER || 'your-email@gmail.com',
+      from: process.env.EMAIL_USER,
       to: 'info@bayadder.com',
       subject: `New Contact Form Submission from ${fullName}`,
       html: `
